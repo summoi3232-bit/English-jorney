@@ -15,7 +15,10 @@ export default function App() {
     p: {}, nt: { d: '', n: 0 }, streak: 0, last: '', done: {}, mocks: [], errors: []
   })
   const [W, setW] = useStored('ej1w', { list: SEED })
-  const [tab, setTab] = useState('today')
+  const [tab, setTab] = useState(() => {
+    const t = new URLSearchParams(window.location.search).get('tab')
+    return TABS.some(([k]) => k === t) ? t : 'today'
+  })
   const words = W.list
   const key = (w) => w.w.toLowerCase()
   const dueN = words.filter((w) => S.p[key(w)] && S.p[key(w)].due <= today()).length
